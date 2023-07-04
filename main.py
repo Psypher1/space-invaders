@@ -1,5 +1,5 @@
 import pygame, sys
-from player import Player
+from code.player import Player
 
 
 class Game:

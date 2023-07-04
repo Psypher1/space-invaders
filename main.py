@@ -3,7 +3,7 @@ from player import Player
 
 class Game:
     def __init__(self) -> None:
-        player_sprite = Player((350,350))
+        player_sprite = Player((screen_width/2, screen_height - 20))
         self.player = pygame.sprite.GroupSingle(player_sprite)
 
     def run(self):
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.QUIT()
+                pygame.quit()
                 sys.exit()
         screen.fill((30,30, 30))
         game.run( )

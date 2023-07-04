@@ -1,13 +1,16 @@
 import pygame, sys
+from player import Player
 
 class Game:
     def __init__(self) -> None:
-        pass
+        player_sprite = Player((350,350))
+        self.player = pygame.sprite.GroupSingle(player_sprite)
 
     def run(self):
+        self.player.draw(screen)
         # update all sprite groups
         # draw all sprite groups
-        pass
+        
 
 
 if __name__ == "__main__":

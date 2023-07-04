@@ -1,5 +1,5 @@
 """
-a player must be able to:
+A player must be able to:
 1. 
 """
 
@@ -7,11 +7,12 @@ import pygame
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos) -> None:
+    def __init__(self, pos, constraint, speed) -> None:
         super().__init__()
         self.image = pygame.image.load("./assets/graphics/player.png").convert_alpha()
         self.rect = self.image.get_rect(midbottom=pos)
-        self.speed = 5
+        self.speed = speed
+        self.max_x_constraint = constraint
 
     def get_input(self):
         keys = pygame.key.get_pressed()
@@ -20,6 +21,13 @@ class Player(pygame.sprite.Sprite):
             self.rect.x += self.speed
         elif keys[pygame.K_LEFT]:
             self.rect.x -= self.speed
+    
+    def constraint(self):
+        if self.rect.left <= 0:
+            self.rect.left = 0
+        if self.rect.right >= self.max_x_constraint:
+            self.rect.right = self.max_x_constraint
 
     def update(self):
         self.get_input()
+        self.constraint()

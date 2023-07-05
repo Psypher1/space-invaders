@@ -100,7 +100,7 @@ class Game:
             for laser in self.player.sprite.lasers:
                 # obstacle collision
                 if pygame.sprite.spritecollide(laser, self.blocks, True):
-                    print("destroy!!!!")
+                    laser.kill()
 
     def run(self):
         self.player.update()

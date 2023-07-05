@@ -35,7 +35,7 @@ class Game:
         self.alien_direction = 1
         # Extra Alien setup
         self.extra_alien = pygame.sprite.GroupSingle()
-        self.extra_alien_spawn_time = randint(40, 80)
+        self.extra_alien_spawn_time = randint(400, 800)
 
     def create_obstacle(self, x_start, y_start, offset_x):
         # enumarate to know where we are in the shape
@@ -94,6 +94,14 @@ class Game:
             self.extra_alien.add(Extra(choice(["right", "left"]), screen_width))
             self.extra_alien_spawn_time = randint(400, 800)
 
+    def collision_checks(self):
+        # player lasers
+        if self.player.sprite.lasers:
+            for laser in self.player.sprite.lasers:
+                # obstacle collision
+                if pygame.sprite.spritecollide(laser, self.blocks, True):
+                    print("destroy!!!!")
+
     def run(self):
         self.player.update()
         self.aliens.update(self.alien_direction)
@@ -102,6 +110,7 @@ class Game:
         self.alien_lasers.update()
         self.extra_alien_timer()
         self.extra_alien.update()
+        self.collision_checks()
 
         self.player.sprite.lasers.draw(screen)
         self.player.draw(screen)

@@ -1,3 +1,4 @@
+from typing import Any
 import pygame
 
 
@@ -7,3 +8,6 @@ class Alien(pygame.sprite.Sprite):
         file_path = "./assets/graphics/" + color + ".png"
         self.image = pygame.image.load(file_path).convert_alpha()
         self.rect = self.image.get_rect(topleft=(x, y))
+
+    def update(self, direction) -> None:
+        self.rect.x += direction

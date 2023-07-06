@@ -113,11 +113,16 @@ class Game:
                 if pygame.sprite.spritecollide(laser, self.blocks, True):
                     laser.kill()
                 # alian collision
-                if pygame.sprite.spritecollide(laser, self.aliens, True):
+                aliens_hit = pygame.sprite.spritecollide(laser, self.aliens, True)
+                if aliens_hit:
+                    for alien in aliens_hit:
+                        self.score += alien.value
                     laser.kill()
+
                 # extra collision
                 if pygame.sprite.spritecollide(laser, self.extra_alien, True):
                     laser.kill()
+                    self.score += 500
 
         # alien laserss
         if self.alien_lasers:
@@ -161,6 +166,10 @@ class Game:
         replay_surface = self.font.render(
             f"Game Over! Play Again? (y/n)", False, "white"
         )
+        replay_rect = replay_surface.get_rect(
+            middle=(screen_width / 2, screen_height / 2)
+        )
+        screen.blit(replay_surface, replay_rect)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_y]:
             self.run()

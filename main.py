@@ -130,7 +130,7 @@ class Game:
                     self.lives -= 1
                     print("WAAANGU ")
                     if self.lives <= 0:
-                        # self.replay()
+                        # self.play_again()
                         pygame.quit()
                         sys.exit()
 
@@ -149,6 +149,9 @@ class Game:
                 live * (self.live_surface.get_size()[0] + 10)
             )
             screen.blit(self.live_surface, (x, 8))
+
+    def play_again(self):
+        pass
 
     def run(self):
         self.player.update()

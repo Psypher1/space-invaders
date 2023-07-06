@@ -201,6 +201,14 @@ class Game:
         # draw all sprite groups
 
 
+class CRT:
+    def __init__(self) -> None:
+        self.tv = pygame.image.load("./assets/graphics/tv.png").convert_alpha()
+
+    def draw(self):
+        screen.blit(self.tv, (0, 0))
+
+
 if __name__ == "__main__":
     pygame.init()
     screen_width = 700
@@ -208,6 +216,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((screen_width, screen_height))
     clock = pygame.time.Clock()
     game = Game()
+    crt = CRT()
 
     ALLIENLASER = pygame.USEREVENT + 1
     pygame.time.set_timer(ALLIENLASER, 800)
@@ -222,6 +231,7 @@ if __name__ == "__main__":
 
         screen.fill((30, 30, 30))
         game.run()
+        # crt.draw()
 
         pygame.display.flip()
         clock.tick(60)

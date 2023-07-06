@@ -107,6 +107,7 @@ class Game:
                 # extra collision
                 if pygame.sprite.spritecollide(laser, self.extra_alien, True):
                     laser.kill()
+
         # alien laserss
         if self.alien_lasers:
             for laser in self.alien_lasers:
@@ -118,6 +119,15 @@ class Game:
                 if pygame.sprite.spritecollide(laser, self.player, False):
                     laser.kill()
                     print("WAAANGU ")
+
+        # aliens
+        if self.aliens:
+            for alien in self.aliens:
+                pygame.sprite.spritecollide(alien, self.blocks, True)
+
+                if pygame.sprite.spritecollide(laser, self.player, False):
+                    pygame.quit()
+                    sys.quit()
 
     def run(self):
         self.player.update()

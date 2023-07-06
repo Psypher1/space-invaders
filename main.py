@@ -104,6 +104,9 @@ class Game:
                 # alian collision
                 if pygame.sprite.spritecollide(laser, self.aliens, True):
                     laser.kill()
+                # extra collision
+                if pygame.sprite.spritecollide(laser, self.extra_alien, True):
+                    laser.kill()
 
     def run(self):
         self.player.update()

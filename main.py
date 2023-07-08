@@ -48,6 +48,18 @@ class Game:
         self.extra_alien = pygame.sprite.GroupSingle()
         self.extra_alien_spawn_time = randint(400, 800)
 
+    def reset(self):
+        self.lives = 3
+        self.score = 0
+        self.player.sprite.rect.center = (screen_width / 2, screen_height - 10)
+        self.blocks.empty()
+        self.create_multiple_obstacles(
+            *self.obstacle_x_positions, x_start=screen_width / 12, y_start=500
+        )
+        self.aliens.empty()
+        self.alien_setup(rows=6, cols=8)
+        self.extra_alien.empty()
+
     def create_obstacle(self, x_start, y_start, offset_x):
         # enumarate to know where we are in the shape
         for row_index, row in enumerate(self.shape):
@@ -137,9 +149,7 @@ class Game:
                     self.lives -= 1
                     print("WAAANGU ")
                     if self.lives <= 0:
-                        pygame.quit()
-                    # self.play_again()
-                    # sys.exit()
+                        self.play_again()
 
         # aliens
         if self.aliens:
@@ -147,8 +157,9 @@ class Game:
                 pygame.sprite.spritecollide(alien, self.blocks, True)
 
                 if pygame.sprite.spritecollide(alien, self.player, False):
-                    pygame.quit()
-                    sys.exit()
+                    self.play_again()
+                    # pygame.quit()
+                    # sys.exit()
 
     def display_lives(self):
         for live in range(self.lives - 1):
@@ -163,19 +174,28 @@ class Game:
         screen.blit(score_surface, score_rect)
 
     def play_again(self):
-        replay_surface = self.font.render(
-            f"Game Over! Play Again? (y/n)", False, "white"
+        font = pygame.font.Font("./assets/font/Pixeled.ttf", 25)
+        message_surface = font.render("GAME OVER", False, "white")
+        message_rect = message_surface.get_rect(
+            center=(screen_width / 2, screen_height / 2 - 50)
         )
-        replay_rect = replay_surface.get_rect(
-            midbottom=(screen_width / 2, screen_height / 2)
+        play_again_surface = font.render("PRESS SPACE TO PLAY AGAIN", False, "white")
+        play_again_rect = play_again_surface.get_rect(
+            center=(screen_width / 2, screen_height / 2 + 50)
         )
-        screen.blit(replay_surface, replay_rect)
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_y]:
-            self.run()
-        elif keys[pygame.K_n]:
-            pygame.quit()
-            sys.exit()
+        screen.blit(message_surface, message_rect)
+        screen.blit(play_again_surface, play_again_rect)
+        pygame.display.flip()
+        # wait for space key to be pressed
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    self.reset()
+                    return
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_n:
+                    pygame.quit()
+                    sys.exit()
+                    return
 
     def run(self):
         self.player.update()
@@ -225,3 +245,15 @@ if __name__ == "__main__":
 
         pygame.display.flip()
         clock.tick(60)
+
+        # check if player wants to play again
+        if game.lives <= 0:
+            pygame.time.wait(2000)  # wait a bit to avoid instant key press
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                        game.reset()
+                        break
+                else:
+                    continue
+                break

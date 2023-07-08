@@ -13,7 +13,7 @@ class Alien(pygame.sprite.Sprite):
             self.value = 300
         if color == "green":
             self.value = 200
-        elif color == "red":
+        else:
             self.value = 100
 
     def update(self, direction) -> None:

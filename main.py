@@ -50,9 +50,14 @@ class Game:
         self.extra_alien_spawn_time = randint(400, 800)
 
         # Load sounds
-        music = pygame.mixer.Sound("./assets/audio/music.wav")
-        music.set_volume(0.2)
-        music.play(loops=-1)
+        self.music = pygame.mixer.Sound("./assets/audio/music.wav")
+        self.music.set_volume(0.2)
+        self.music.play(loops=-1)
+
+        self.laser_sound = pygame.mixer.Sound("./assets/audio/laser.wav")
+        self.laser_sound.set_volume(0.3)
+        self.explosion_sound = pygame.mixer.Sound("./assets/audio/explosion.wav")
+        self.explosion_sound.set_volume(0.5)
 
     def reset(self):
         self.lives = 3
@@ -65,6 +70,7 @@ class Game:
         self.aliens.empty()
         self.alien_setup(rows=6, cols=8)
         self.extra_alien.empty()
+        self.music.play(loops=-1)
 
     def create_obstacle(self, x_start, y_start, offset_x):
         # enumarate to know where we are in the shape
@@ -116,6 +122,7 @@ class Game:
             random_alien = choice(self.aliens.sprites())
             laser_sprite = Laser(random_alien.rect.center, 6, screen_height)
             self.alien_lasers.add(laser_sprite)
+            self.laser_sound.play()
 
     def extra_alien_timer(self):
         self.extra_alien_spawn_time -= 1
@@ -130,14 +137,16 @@ class Game:
                 # obstacle collision
                 if pygame.sprite.spritecollide(laser, self.blocks, True):
                     laser.kill()
+
                 # alian collision
                 aliens_hit = pygame.sprite.spritecollide(laser, self.aliens, True)
                 if aliens_hit:
                     for alien in aliens_hit:
-                        self.score += alien.value
+                        self.score += alien.value  # weird errror on this line
                     laser.kill()
+                    self.explosion_sound.play()
 
-                # extra collision
+                # extra alien collision
                 if pygame.sprite.spritecollide(laser, self.extra_alien, True):
                     laser.kill()
                     self.score += 500
@@ -155,6 +164,7 @@ class Game:
                     self.lives -= 1
                     print("WAAANGU ")
                     if self.lives <= 0:
+                        self.music.stop()
                         self.play_again()
 
         # aliens

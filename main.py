@@ -44,9 +44,15 @@ class Game:
         self.alien_lasers = pygame.sprite.Group()
         self.alien_setup(rows=6, cols=8)
         self.alien_direction = 1
+
         # Extra Alien setup
         self.extra_alien = pygame.sprite.GroupSingle()
         self.extra_alien_spawn_time = randint(400, 800)
+
+        # Load sounds
+        music = pygame.mixer.Sound("./assets/audio/music.wav")
+        music.set_volume(0.2)
+        music.play(loops=-1)
 
     def reset(self):
         self.lives = 3

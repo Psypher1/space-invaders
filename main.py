@@ -269,7 +269,9 @@ if __name__ == "__main__":
     pygame.init()
     screen_width = 700
     screen_height = 700
+    pygame.display.set_caption("Space Pew Pew")
     screen = pygame.display.set_mode((screen_width, screen_height))
+
     clock = pygame.time.Clock()
     game = Game()
     crt = CRT()
